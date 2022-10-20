@@ -5,30 +5,13 @@ import (
 	"os"
 
 	// "github.com/charmbracelet/bubbles/list"
+	"github.com/DocLivesey/terminal_slave/data"
 	"github.com/DocLivesey/terminal_slave/viewstub"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
 var docStyle = lipgloss.NewStyle().Margin(1, 2)
-
-type stub struct {
-	jar   string
-	path  string
-	state bool
-	pid   string
-}
-
-func (i stub) Jar() string  { return i.jar }
-func (i stub) Path() string { return i.path }
-func (i stub) State() string {
-	if i.state {
-		return "On"
-	}
-	return "Off"
-}
-func (i stub) Pid() string         { return i.pid }
-func (i stub) FilterValue() string { return i.jar }
 
 type model struct {
 	list viewstub.Model
@@ -59,10 +42,15 @@ func (m model) View() string {
 }
 
 func main() {
-	items := []viewstub.Item{
-		stub{jar: "jar1.jar", path: "/home/stubfolder1", state: true, pid: "10002"},
-		stub{jar: "jar2.jar", path: "/home/stubfolder2", state: false, pid: "-"},
+	stubs := data.Populate()
+	var items []viewstub.Item
+	for _, s := range stubs {
+		items = append(items, s)
 	}
+	// items := []viewstub.Item{
+	// 	Stub{jar: "jar1.jar", path: "/home/stubfolder1", state: true, pid: "10002"},
+	// 	Stub{jar: "jar2.jar", path: "/home/stubfolder2", state: false, pid: "-"},
+	// }
 
 	m := model{list: viewstub.New(items, viewstub.NewDefaultDelegate(), 0, 0)}
 	// m.list.Title = "My Fave Things"
