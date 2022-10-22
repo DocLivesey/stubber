@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"strings"
-	// main "github.com/DocLivesey/terminal_slave"
+	// main "github.com/DocLivesey/stubber"
 )
 
 type Stub struct {
@@ -29,14 +29,19 @@ func (i Stub) FilterValue() string { return i.jar }
 
 func firstWord(value string) string {
 	// Loop over all indexes in the string.
-	count := 3
+	count := 0
+	start := false
 	for i := range value {
 		// If we encounter a space, reduce the count.
-		if value[i] == ' ' {
-			count -= 1
-			if count == 0 {
-				return value[2:i]
-			}
+		if (value[i] == ' ') && !start {
+			count += 1
+		} else if value[i] != ' ' {
+			start = true
+		} else if value[i] == ' ' && start {
+			// count -= 1
+			// if count == 0 {
+			return value[count:i]
+			// }
 		}
 	}
 	// Return the entire string.

@@ -5,8 +5,9 @@ import (
 	"os"
 
 	// "github.com/charmbracelet/bubbles/list"
-	"github.com/DocLivesey/terminal_slave/data"
-	"github.com/DocLivesey/terminal_slave/viewstub"
+
+	"github.com/DocLivesey/stubber/data"
+	"github.com/DocLivesey/stubber/viewstub"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )

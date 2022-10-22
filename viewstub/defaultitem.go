@@ -5,6 +5,7 @@ import (
 	"io"
 	"strings"
 
+	"github.com/DocLivesey/stubber/data"
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
@@ -119,13 +120,32 @@ type DefaultDelegate struct {
 
 // NewDefaultDelegate creates a new delegate with default styles.
 func NewDefaultDelegate() DefaultDelegate {
-	return DefaultDelegate{
+	d := DefaultDelegate{
 		ShowDescription: true,
 		Styles:          NewDefaultItemStyles(),
 		height:          2,
 		spacing:         1,
+		// UpdateFunc: 	 UpdateFunction(nil,*NewModel),
 	}
+
+	d.UpdateFunc = func(msg tea.Msg, m *Model) tea.Cmd {
+		stubs := data.Populate()
+		m.items = nil
+		for _, s := range stubs {
+			m.items = append(m.items, s)
+		}
+		return nil
+	}
+	return d
 }
+
+// func UpdateFunction(msg tea.Msg, m *Model) tea.Cmd {
+// 	stubs := data.Populate()
+// 	for _, s := range stubs {
+// 		m.items = append(m.items, s)
+// 	}
+// 	return nil
+// }
 
 // SetHeight sets delegate's preferred height.
 func (d *DefaultDelegate) SetHeight(i int) {

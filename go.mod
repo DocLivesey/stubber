@@ -1,4 +1,4 @@
-module github.com/DocLivesey/terminal_slave
+module github.com/DocLivesey/stubber
 
 go 1.18
 

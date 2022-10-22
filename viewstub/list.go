@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/DocLivesey/stubber/data"
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/paginator"
@@ -503,6 +504,15 @@ func (m *Model) CursorDown() {
 	m.cursor = itemsOnPage - 1
 }
 
+//ChangeState changes state of the stub
+func (m *Model) ChangeState() {
+	items := m.VisibleItems()
+	data.ChangeState(items[m.cursor].(data.Stub))
+	// m.delegate.Update(nil, m)
+	// time.Sleep(2 * time.Second)
+
+}
+
 // PrevPage moves to the previous page, if available.
 func (m Model) PrevPage() {
 	m.Paginator.PrevPage()
@@ -667,6 +677,7 @@ func (m *Model) updateKeybindings() {
 		m.KeyMap.Quit.SetEnabled(false)
 		m.KeyMap.ShowFullHelp.SetEnabled(false)
 		m.KeyMap.CloseFullHelp.SetEnabled(false)
+		m.KeyMap.StartStop.SetEnabled(false)
 
 	default:
 		hasItems := len(m.items) != 0
@@ -789,7 +800,9 @@ func (m *Model) handleBrowsing(msg tea.Msg) tea.Cmd {
 
 		case key.Matches(msg, m.KeyMap.Quit):
 			return tea.Quit
-
+		case key.Matches(msg, m.KeyMap.StartStop):
+			m.ChangeState()
+			//TODO add command to restart stub
 		case key.Matches(msg, m.KeyMap.CursorUp):
 			m.CursorUp()
 
@@ -905,6 +918,7 @@ func (m Model) ShortHelp() []key.Binding {
 	kb := []key.Binding{
 		m.KeyMap.CursorUp,
 		m.KeyMap.CursorDown,
+		m.KeyMap.StartStop,
 	}
 
 	filtering := m.filterState == Filtering
@@ -940,6 +954,7 @@ func (m Model) FullHelp() [][]key.Binding {
 	kb := [][]key.Binding{{
 		m.KeyMap.CursorUp,
 		m.KeyMap.CursorDown,
+		// m.KeyMap.StartStop,
 		m.KeyMap.NextPage,
 		m.KeyMap.PrevPage,
 		m.KeyMap.GoToStart,
@@ -958,6 +973,7 @@ func (m Model) FullHelp() [][]key.Binding {
 
 	listLevelBindings := []key.Binding{
 		m.KeyMap.Filter,
+		m.KeyMap.StartStop,
 		m.KeyMap.ClearFilter,
 		m.KeyMap.AcceptWhileFiltering,
 		m.KeyMap.CancelWhileFiltering,
