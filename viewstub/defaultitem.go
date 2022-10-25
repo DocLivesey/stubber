@@ -123,7 +123,7 @@ func NewDefaultDelegate() DefaultDelegate {
 	d := DefaultDelegate{
 		ShowDescription: true,
 		Styles:          NewDefaultItemStyles(),
-		height:          2,
+		height:          3,
 		spacing:         1,
 		// UpdateFunc: 	 UpdateFunction(nil,*NewModel),
 	}

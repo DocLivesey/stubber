@@ -677,12 +677,13 @@ func (m *Model) updateKeybindings() {
 		m.KeyMap.Quit.SetEnabled(false)
 		m.KeyMap.ShowFullHelp.SetEnabled(false)
 		m.KeyMap.CloseFullHelp.SetEnabled(false)
-		m.KeyMap.StartStop.SetEnabled(false)
+		m.KeyMap.StartStop.SetEnabled(true)
 
 	default:
 		hasItems := len(m.items) != 0
 		m.KeyMap.CursorUp.SetEnabled(hasItems)
 		m.KeyMap.CursorDown.SetEnabled(hasItems)
+		// m.KeyMap.StartStop.SetEnabled(hasItems)
 
 		hasPages := m.Paginator.TotalPages > 1
 		m.KeyMap.NextPage.SetEnabled(hasPages)
@@ -933,6 +934,7 @@ func (m Model) ShortHelp() []key.Binding {
 
 	kb = append(kb,
 		m.KeyMap.Filter,
+		// m.KeyMap.StartStop,
 		m.KeyMap.ClearFilter,
 		m.KeyMap.AcceptWhileFiltering,
 		m.KeyMap.CancelWhileFiltering,
